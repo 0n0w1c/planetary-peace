@@ -1,15 +1,27 @@
-#### Planetary Peace  
+# Planetary Peace
 
-When the shortcut is active (yellow), enemy units are peaceful unless provoked.  
-When the shortcut is inactive (gray), enemy units are hostile.  
+![Peaceful Mode](graphics/peaceful.png)  
+*Peaceful Mode Active – enemy units will not attack unless provoked*
 
-Each planet (surface) maintains its own peaceful state.  
+![Hostile Mode](graphics/hostile.png)  
+*Peaceful Mode Inactive – enemy units are hostile*
 
-Exception: Demolishers on Vulcanus are not affected by peaceful mode!  
+---
 
-#### Controls  
-* Shortcut button appears in the shortcut bar  
-* Default keybind: Ctrl + P  
+Each planet (surface) maintains its own peaceful state.
 
-#### Alternate Locales  
-cs, de, es, fr, ja, pl, pt-BR, ru, tr, uk, zh-CN, and zh-TW  
+**Exception:** Demolishers on Vulcanus are not affected by peaceful mode.
+
+---
+
+## Controls
+
+- Shortcut button appears in the shortcut bar  
+- Default keybind: Ctrl + P
+
+---
+
+## Alternate Locales
+
+Available translations:  
+`cs`, `de`, `es`, `fr`, `ja`, `pl`, `pt-BR`, `ru`, `tr`, `uk`, `zh-CN`, `zh-TW`
