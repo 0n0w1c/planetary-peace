@@ -1,0 +1,11 @@
+{
+    "name": "planetary-peace",
+    "version": "0.0.1",
+    "title": "Planetary Peace",
+    "author": "0n0w1c",
+    "factorio_version": "2.0",
+    "description": "Provides a shortcut to toggle peaceful mode, per planet",
+    "dependencies": [
+        "base >= 2.0"
+    ]
+}
