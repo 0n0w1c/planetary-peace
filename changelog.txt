@@ -1,0 +1,14 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.0.2
+Date: 13.04.2025
+  Changes:
+    - Added locale translations for: cs, de, es, fr, ja, pl, pt-BR, ru, tr, uk, zh-CN, and zh-TW 
+  Bugfixes:
+    - None
+---------------------------------------------------------------------------------------------------
+Version: 0.0.1
+Date: 13.04.2025
+  Changes:
+    - Initial release
+  Bugfixes:
+    - None
