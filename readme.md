@@ -6,13 +6,9 @@
 ![Hostile Mode](graphics/hostile.png)  
 *Peaceful Mode Inactive – enemy units are hostile*
 
----
 
 Each planet (surface) maintains its own peaceful state.
 
-**Exception:** Demolishers on Vulcanus are not affected by peaceful mode.
-
----
 
 ## Controls
 
