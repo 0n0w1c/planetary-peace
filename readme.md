@@ -18,6 +18,4 @@ Each planet (surface) maintains its own peaceful state.
 ---
 
 ## Alternate Locales
-
-Available translations:  
 `cs`, `de`, `es`, `fr`, `ja`, `pl`, `pt-BR`, `ru`, `tr`, `uk`, `zh-CN`, `zh-TW`
