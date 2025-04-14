@@ -1,24 +1,48 @@
-local valid_types = { "unit" }
+local MAXIMUM_TO_DESTROY = 100
 
+local ENEMY_TYPES = { "unit" }
 if script.active_mods["space-age"] then
-    table.insert(valid_types, "spider-unit")
+    table.insert(ENEMY_TYPES, "spider-unit")
 end
 
--- Note: Demolishers and other scripted planetary threats are not destroyed.
--- Only standard enemy units and modded biters are cleared when peaceful mode is enabled.
-local function kill_all_hostile_units_on_surface(surface)
+local function process_destroy_queue()
+    local queue = storage.destroy_queue
+    if not queue or #queue == 0 then
+        storage.destroy_queue = nil
+        storage.destroy_queue_processing = false
+        script.on_nth_tick(1, nil)
+        return
+    end
+
+    local count = 0
+    while count < MAXIMUM_TO_DESTROY and #queue > 0 do
+        local enemy_unit = table.remove(queue)
+        if enemy_unit.valid then enemy_unit.destroy() end
+        count = count + 1
+    end
+end
+
+-- Destroys standard enemy units and modded biters when peaceful mode is toggled.
+-- Demolishers and scripted planetary threats are not affected.
+local function destroy_all_enemy_units_on_surface(surface, player)
     local player_force = game.forces["player"]
     local neutral_force = game.forces["neutral"]
+    local queue = {}
 
     for _, force in pairs(game.forces) do
         if force ~= player_force and force ~= neutral_force and force.is_enemy(player_force) then
-            for _, entity_type in pairs(valid_types) do
-                local entities = surface.find_entities_filtered({ force = force, type = entity_type })
-                for _, entity in pairs(entities) do
-                    entity.destroy()
-                end
+            local enemies = surface.find_entities_filtered({ force = force, type = ENEMY_TYPES })
+
+            for _, enemy in ipairs(enemies) do
+                table.insert(queue, enemy)
             end
         end
+    end
+
+    if #queue > 0 then
+        storage.destroy_queue = queue
+        storage.destroy_queue_processing = true
+        script.on_nth_tick(1, process_destroy_queue)
     end
 end
 
@@ -35,6 +59,15 @@ local function toggle_planetary_peace(player)
     local surface = player.surface
     if not surface then return end
 
+    if storage.destroy_queue_processing then
+        for _, other_player in pairs(game.connected_players) do
+            if other_player.surface == surface then
+                update_shortcut(other_player)
+            end
+        end
+        return
+    end
+
     surface.peaceful_mode = not surface.peaceful_mode
 
     for _, other_player in pairs(game.connected_players) do
@@ -43,7 +76,7 @@ local function toggle_planetary_peace(player)
         end
     end
 
-    kill_all_hostile_units_on_surface(surface)
+    destroy_all_enemy_units_on_surface(surface, player)
 end
 
 local function on_shortcut_key_pressed(event)

@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.7
+Date: 14.04.2025
+  Changes:
+    - Added a destruction queue for enemy units to spread and throttle the workload
+      The current rate is 6000 enemy units destroyed per second (100 per tick)
+  Bugfixes:
+    - None
+---------------------------------------------------------------------------------------------------
 Version: 0.0.6
 Date: 14.04.2025
   Changes:
