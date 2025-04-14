@@ -3,6 +3,7 @@ data:extend({
         type = "shortcut",
         name = "planetary-peace-toggle",
         action = "lua",
+        style = "default",
         toggleable = true,
         icon = "__planetary-peace__/graphics/icons/planetary-peace.png",
         icon_size = 64,
