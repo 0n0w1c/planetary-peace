@@ -12,5 +12,9 @@ Use the shortcut or *Ctrl + P* to toggle peaceful mode on the current planet.
 
 ---
 
+*Startup setting to Disable the annimation*
+
+---
+
 #### Alternate Locales
 `cs`, `de`, `es`, `fr`, `ja`, `pl`, `pt-BR`, `ru`, `tr`, `uk`, `zh-CN`, `zh-TW`
