@@ -12,7 +12,7 @@ Use the shortcut or *Ctrl + P* to toggle peaceful mode on the current planet.
 
 ---
 
-*Startup setting to Disable the annimation*
+*Startup setting to Disable the animation*
 
 ---
 
