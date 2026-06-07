@@ -17,11 +17,30 @@ if script.active_mods["space-age"] then
     table.insert(ENEMY_TYPES, "spider-unit")
 end
 
+local spawn_toggle_effect_on_surface
+
+local function finish_destroy_queue()
+    local pending_effect = storage.pending_toggle_effect
+
+    storage.destroy_queue = nil
+    storage.destroy_queue_surface_index = nil
+    storage.pending_toggle_effect = nil
+    script.on_nth_tick(1, nil)
+
+    if pending_effect then
+        local surface = game.surfaces[pending_effect.surface_index]
+        local player = pending_effect.player_index and game.get_player(pending_effect.player_index)
+
+        if surface and surface.valid then
+            spawn_toggle_effect_on_surface(surface, pending_effect.hostile, player)
+        end
+    end
+end
+
 local function process_destroy_queue()
     local queue = storage.destroy_queue
     if not queue or table_size(queue) == 0 then
-        storage.destroy_queue = nil
-        script.on_nth_tick(1, nil)
+        finish_destroy_queue()
         return
     end
 
@@ -30,6 +49,10 @@ local function process_destroy_queue()
         local enemy_unit = table.remove(queue)
         if enemy_unit.valid then enemy_unit.destroy() end
         count = count + 1
+    end
+
+    if table_size(queue) == 0 then
+        finish_destroy_queue()
     end
 end
 
@@ -170,11 +193,22 @@ local function spawn_effect_unit_on_surface(surface, hostile, preferred_player)
     queue_effect_unit_for_removal(unit)
 end
 
-local function create_toggle_effect(hostile, preferred_player)
+function spawn_toggle_effect_on_surface(surface, hostile, preferred_player)
     if animation_disabled() then return end
-    if not preferred_player or not preferred_player.valid or not preferred_player.character or not preferred_player.character.valid then return end
+    if not surface or not surface.valid then return end
 
-    spawn_effect_unit_on_surface(preferred_player.character.surface, hostile, preferred_player)
+    spawn_effect_unit_on_surface(surface, hostile, preferred_player)
+end
+
+local function defer_toggle_effect(surface, hostile, preferred_player)
+    if animation_disabled() then return end
+    if not surface or not surface.valid then return end
+
+    storage.pending_toggle_effect = {
+        surface_index = surface.index,
+        hostile = hostile,
+        player_index = preferred_player and preferred_player.valid and preferred_player.index or nil
+    }
 end
 
 local function destroy_all_enemy_units_on_surface(surface)
@@ -196,6 +230,7 @@ local function destroy_all_enemy_units_on_surface(surface)
 
     if table_size(queue) > 0 then
         storage.destroy_queue = queue
+        storage.destroy_queue_surface_index = surface.index
         script.on_nth_tick(1, process_destroy_queue)
     end
 end
@@ -232,7 +267,12 @@ local function toggle_planetary_peace(player)
     end
 
     destroy_all_enemy_units_on_surface(surface)
-    create_toggle_effect(hostile, player)
+
+    if storage.destroy_queue and table_size(storage.destroy_queue) > 0 then
+        defer_toggle_effect(surface, hostile, player)
+    else
+        spawn_toggle_effect_on_surface(surface, hostile, player)
+    end
 end
 
 local function on_shortcut_key_pressed(event)
@@ -259,6 +299,13 @@ end)
 script.on_configuration_changed(function()
     if storage.effect_units and table_size(storage.effect_units) == 0 then
         storage.effect_units = nil
+    end
+    if storage.destroy_queue and table_size(storage.destroy_queue) > 0 then
+        script.on_nth_tick(1, process_destroy_queue)
+    else
+        storage.destroy_queue = nil
+        storage.destroy_queue_surface_index = nil
+        storage.pending_toggle_effect = nil
     end
     for _, player in pairs(game.players) do
         update_shortcut(player)
