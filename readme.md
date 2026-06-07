@@ -6,9 +6,11 @@
 ![Hostile Mode](graphics/hostile.png)  
 *Peaceful Mode Inactive – enemy units are hostile*
 
-Factorio sets peaceful mode per surface; this mod makes that setting toggleable for each planet (surface).
+Factorio sets peaceful mode per surface; this mod makes that setting toggleable for each planet (surface).  
 
-Use the shortcut or *Ctrl + P* to toggle peaceful mode on the current planet.
+Use the shortcut or *Ctrl + P* to toggle peaceful mode on the current planet.  
+
+The animation is confirmation the active units have been removed.  
 
 ---
 
