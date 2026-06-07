@@ -2,7 +2,7 @@
 Version: 0.1.1
 Date: 07.06.2026
   Changes:
-    - Change the annimation to trigger when the unit removal process has completed
+    - Changed the animation to trigger once the unit removal process has completed
   Bugfixes:
     - None
 ---------------------------------------------------------------------------------------------------
