@@ -156,7 +156,8 @@ local function spawn_effect_unit_on_surface(surface, hostile, preferred_player)
     if not anchor_position then return end
 
     local angle = (seed * 1.61803398875 + game.tick / 60) % (math.pi * 2)
-    local spawn_distance = hostile and (effect_unit.ranged and HOSTILE_RANGED_SPAWN_DISTANCE or HOSTILE_SPAWN_DISTANCE) or 8
+    local spawn_distance = hostile
+        and (effect_unit.ranged and HOSTILE_RANGED_SPAWN_DISTANCE or HOSTILE_SPAWN_DISTANCE) or 8
     local spawn_center = offset_position(anchor_position, spawn_distance, angle)
     local spawn_position = surface.find_non_colliding_position(effect_unit.name, spawn_center, 8, 0.5)
         or surface.find_non_colliding_position(effect_unit.name, anchor_position, 16, 0.5)
@@ -173,7 +174,6 @@ local function spawn_effect_unit_on_surface(surface, hostile, preferred_player)
     if not unit or not unit.valid then return end
 
     unit.destructible = false
-    unit.minable = false
     unit.operable = false
 
     if hostile and target_character and target_character.valid then
